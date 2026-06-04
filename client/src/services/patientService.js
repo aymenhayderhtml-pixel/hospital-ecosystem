@@ -1,7 +1,10 @@
-import api from './api'
+import api from './api';
 
-export const getPatients = (params) => api.get('/patients', { params })
-export const getPatient = (id) => api.get(`/patients/${id}`)
-export const createPatient = (data) => api.post('/patients', data)
-export const updatePatient = (id, data) => api.put(`/patients/${id}`, data)
-export const deletePatient = (id) => api.delete(`/patients/${id}`)
+export const patientService = {
+  create: (patientData) => api.post('/patients', patientData),
+  getAll: (params = {}) => api.get('/patients', { params }),
+  getById: (id) => api.get(`/patients/${id}`),
+  update: (id, patientData) => api.put(`/patients/${id}`, patientData),
+};
+
+export default patientService;

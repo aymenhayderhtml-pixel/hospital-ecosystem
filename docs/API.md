@@ -10,9 +10,21 @@ GET /health
 
 ## Auth
 
+### Register
 ```
-POST /auth/register    { email, password, name, role? }
-POST /auth/login       { email, password }
+POST /auth/register
+Body: { "name": "...", "email": "...", "password": "...", "role": "patient|doctor|receptionist|admin" }
+```
+
+### Login
+```
+POST /auth/login
+Body: { "email": "...", "password": "..." }
+```
+
+### Get Current User (requires Bearer token)
+```
+GET /auth/me
 ```
 
 ## Patients (requires Bearer token)

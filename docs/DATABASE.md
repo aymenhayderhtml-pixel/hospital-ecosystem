@@ -4,14 +4,29 @@ Tables managed via Supabase PostgreSQL.
 
 ## users
 
-| column   | type                     | notes                     |
-| -------- | ------------------------ | ------------------------- |
-| id       | uuid (primary key)       | auto-generated            |
-| email    | text (unique)            |                           |
-| password | text                     | bcrypt hashed             |
-| name     | text                     |                           |
-| role     | text                     | admin, doctor, patient    |
-| created_at | timestamptz            | auto                      |
+```sql
+CREATE TYPE user_role AS ENUM ('admin', 'doctor', 'receptionist', 'patient');
+
+CREATE TABLE users (
+  id         UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  name       VARCHAR(255) NOT NULL,
+  email      VARCHAR(255) UNIQUE NOT NULL,
+  password   VARCHAR(255) NOT NULL,        -- bcrypt hash
+  role       user_role NOT NULL DEFAULT 'patient',
+  is_active  BOOLEAN NOT NULL DEFAULT true,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+```
+
+**Important:** Do **not** enable Row-Level Security on the `users` table. Auth is handled server-side via JWT middleware.
+
+### Indexes
+
+```sql
+CREATE INDEX idx_users_email ON users(LOWER(email));
+CREATE INDEX idx_users_role ON users(role);
+```
 
 ## patients
 
