@@ -43,6 +43,13 @@
 - **Dashboard:** Nav with user info + logout, quick-action cards (Patients, Appointments, Reports), welcome message
 - **App.jsx:** Routes wired for `/patients`, `/patients/new`, `/patients/:id`
 
+### Professional Admin Dashboard Layout — Complete
+- **Recharts:** Installed for bar chart visualization
+- **MainLayout:** Nested layout wrapper with mobile sidebar drawer (overlay + backdrop), desktop fixed sidebar, sticky mobile top bar with hamburger menu, `<Outlet />` for child routes
+- **Sidebar:** Fixed left sidebar with hospital logo/branding, navigation links (Dashboard, Patients, Appointments [Coming Soon], Settings), active state highlighting via NavLink, disabled "Coming Soon" items, user avatar (initials), role display, logout button. Responsive: slides in on mobile, always visible on lg+
+- **DashboardHome:** 4 stat cards (Total Patients, Today's Registrations, Active Doctors, Pending Appointments) with trend indicators, bar chart (Recharts with responsive container, rounded bars, custom tooltips), Hospital Summary card (beds, in/out patients), Recent Patients table (fetches live from API, clickable rows, initials avatars, gender badges). Loading, empty, and error states handled
+- **App.jsx:** Refactored to nested routes pattern — `MainLayout` wraps all protected routes via `<Outlet />`, auth pages excluded, index redirects to `/dashboard`
+
 ### Pending
 - Create Supabase `users` and `patients` tables via SQL Editor
 - Set up real credentials in `.env` files

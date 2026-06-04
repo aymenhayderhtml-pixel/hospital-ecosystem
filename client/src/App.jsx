@@ -1,10 +1,11 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
+import MainLayout from './components/layout/MainLayout';
 
 import LoginPage from './pages/auth/LoginPage';
 import RegisterPage from './pages/auth/RegisterPage';
-import Dashboard from './pages/dashboard/Dashboard';
+import DashboardHome from './pages/dashboard/DashboardHome';
 import PatientList from './components/patients/PatientList';
 import PatientForm from './components/patients/PatientForm';
 import PatientProfile from './components/patients/PatientProfile';
@@ -14,62 +15,35 @@ function App() {
     <AuthProvider>
       <Router>
         <Routes>
-          {/* Public routes */}
+          {/* Public auth routes (no sidebar) */}
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
 
-          {/* Protected routes */}
+          {/* Protected routes wrapped with MainLayout */}
           <Route
-            path="/dashboard"
             element={
               <ProtectedRoute>
-                <Dashboard />
+                <MainLayout />
               </ProtectedRoute>
             }
-          />
-
-          {/* Patient routes */}
-          <Route
-            path="/patients"
-            element={
-              <ProtectedRoute>
-                <PatientList />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/patients/new"
-            element={
-              <ProtectedRoute>
-                <PatientForm />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/patients/:id"
-            element={
-              <ProtectedRoute>
-                <PatientProfile />
-              </ProtectedRoute>
-            }
-          />
-
-          {/* Admin route */}
-          <Route
-            path="/admin"
-            element={
-              <ProtectedRoute allowedRoles={['admin']}>
-                <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-                  <div className="text-center">
-                    <h1 className="text-3xl font-bold text-gray-900">🛡️ Admin Panel</h1>
-                    <p className="text-gray-600 mt-2">Admin access only.</p>
-                  </div>
+          >
+            <Route index element={<Navigate to="/dashboard" replace />} />
+            <Route path="/dashboard" element={<DashboardHome />} />
+            <Route path="/patients" element={<PatientList />} />
+            <Route path="/patients/new" element={<PatientForm />} />
+            <Route path="/patients/:id" element={<PatientProfile />} />
+            <Route
+              path="/settings"
+              element={
+                <div className="bg-white rounded-xl border border-gray-200 p-8 text-center">
+                  <h2 className="text-xl font-semibold text-gray-900">Settings</h2>
+                  <p className="mt-2 text-gray-600">Settings page coming soon...</p>
                 </div>
-              </ProtectedRoute>
-            }
-          />
+              }
+            />
+          </Route>
 
-          {/* Default redirect */}
+          {/* 404 Fallback */}
           <Route path="*" element={<Navigate to="/dashboard" replace />} />
         </Routes>
       </Router>
