@@ -39,3 +39,5 @@ process.on('unhandledRejection', (err) => {
   console.error('UNHANDLED REJECTION! Server shutting down...', err);
   server.close(() => process.exit(1));
 });
+
+// Force restart nodemon
